@@ -6,7 +6,7 @@ name: "Deploy Now: Execute Build"
 on:
   workflow_call:
     inputs:
-      site-url:
+      site-url: https://pre-prod.infinity-jewels.fr/
         required: true
         type: string
       branch-id:
