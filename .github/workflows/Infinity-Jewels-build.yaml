@@ -35,7 +35,7 @@ jobs:
       - name: Build Node assets
         env:
           CI: true
-          SITE_URL: ${{ inputs.site-url }}
+          SITE_URL: ${{ https://pre-prod.infinity-jewels.fr/ }}
         run: npm init -y
 
       - name: Setup Node
@@ -46,7 +46,7 @@ jobs:
       - name: Build Node assets
         env:
           CI: true
-          SITE_URL: ${{ inputs.site-url }}
+          SITE_URL: ${{ https://pre-prod.infinity-jewels.fr/ }}
           STRIPE_SECRET_KEY: your_secret_key_here
           STRIPE_WEBHOOK_SECRET: your_webhook_secret_here
         run: npm install express stripe body-parser dotenv
