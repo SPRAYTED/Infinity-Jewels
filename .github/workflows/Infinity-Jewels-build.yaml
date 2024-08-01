@@ -1,0 +1,65 @@
+# To better understand this file read this:
+# https://docs.ionos.space/docs/github-actions-customization/
+
+name: "Deploy Now: Execute Build"
+
+on:
+  workflow_call:
+    inputs:
+      site-url:
+        required: true
+        type: string
+      branch-id:
+        required: true
+        type: string
+
+env:
+  DEPLOYMENT_FOLDER: /prod
+
+jobs:
+# Please do not rename this job
+  build-project:
+    name: build Infinity-Jewels
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: vv22.5.1
+
+      - name: Build Node assets
+        env:
+          CI: true
+          SITE_URL: ${{ inputs.site-url }}
+        run: npm init -y
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: vv22.5.1
+
+      - name: Build Node assets
+        env:
+          CI: true
+          SITE_URL: ${{ inputs.site-url }}
+          STRIPE_SECRET_KEY: your_secret_key_here
+          STRIPE_WEBHOOK_SECRET: your_webhook_secret_here
+        run: npm install express stripe body-parser dotenv
+
+# Please do not touch the following action
+      - name: Store deployment content
+        uses: ionos-deploy-now/artifact-action@v1
+        with:
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          service-host: api-eu.ionos.space
+          project-id: 52e3d5f6-7821-4e6f-8e5c-bc5c38227707
+          branch-id: ${{ inputs.branch-id }}
+          version: ${{ github.sha }}
+          folder: ${{ env.DEPLOYMENT_FOLDER }}
+          config-file: .deploy-now/Infinity-Jewels/config.yaml
+          action: upload
